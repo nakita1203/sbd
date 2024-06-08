@@ -40,18 +40,24 @@ const uploadFile2Gdrive = async (fileObject) => {
 
 const uploadFile = async (req, res) => {
     try {
-        const { account_id } = req.body;
+        const { account_id, nik, polres_id } = req.body;
         const files = req.files;
 
         const ktp_id = await uploadFile2Gdrive(files.ktp[0]);
         const kk_id = await uploadFile2Gdrive(files.kk[0]);
 
-        const [result] = await pool.query(
-            'INSERT INTO Document (account_id, ktp_id, kk_id) VALUES ($1, $2, $3)',
+        const documentResult = await pool.query(
+            'INSERT INTO Document (account_id, ktp_id, kk_id) VALUES ($1, $2, $3) RETURNING document_id',
             [account_id, ktp_id, kk_id]
         );
 
-        res.status(200).send("Files are uploaded");
+        const document_id = documentResult.rows[0].document_id;
+
+        const result = await pool.query(
+            'INSERT INTO request (nik, polres_id, document_id) VALUES ($1, $2, $3) RETURNING *',
+            [nik, polres_id, document_id]
+        );
+        res.status(201).json(result.rows[0]);
     } catch (error) {
         res.send(error.message);
     }

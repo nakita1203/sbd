@@ -68,19 +68,6 @@ async function loginUserController(req, res) {
     }
 };
 
-// Buat request baru
-const createNewRequest = async (req, res) => {
-    const { nik, polres_id, document_id } = req.body;
-
-    try {
-        const newReq = await addRequest(nik, polres_id, document_id);
-        res.status(201).json(newReq);
-    } catch (error) {
-        console.error('Error creating new request:', error);
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-};
-
 const deleteUserRequest = async (req, res) => {
     const { request_id } = req.body;
 
@@ -96,6 +83,5 @@ const deleteUserRequest = async (req, res) => {
 module.exports = { 
     createUserController, 
     loginUserController,
-    createNewRequest,
     deleteUserRequest
 };
