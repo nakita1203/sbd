@@ -1,3 +1,4 @@
+const { query } = require('express');
 const { pool } = require('../config/db.config.js');
 const bcrypt = require('bcryptjs');
 
@@ -22,4 +23,28 @@ const createUser = async (user) => {
     );
 };
 
-module.exports = {createUser};
+const getAllAddress = async() => {
+    try {
+        const result = await pool.query('SELECT * FROM Address');
+        return result.rows;
+    } catch (error) {
+        console.error('Error fetching addresses', error);
+        throw error;
+    }
+}
+
+const getAllPolres = async () => {
+    try {
+        const result = await pool.query('SELECT * FROM Polres');
+        return result.rows;
+    } catch (error) {
+        console.error('Error fetching polres:', error);
+        throw error;
+    }
+}
+
+module.exports = {
+    createUser,
+    getAllAddress,
+    getAllPolres
+};

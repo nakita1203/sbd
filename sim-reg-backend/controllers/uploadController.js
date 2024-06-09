@@ -1,12 +1,7 @@
 const stream = require('stream');
-// const express = require('express');
-// const multer = require('multer');
 const path = require('path');
 const { google } = require('googleapis');
 const { pool } = require('../config/db.config.js');
-
-// const uploadRouter = express.Router();
-// const upload = multer();
 
 const KEYFILEPATH = path.join(__dirname, 'credentials.json');
 const SCOPES = ['https://www.googleapis.com/auth/drive'];

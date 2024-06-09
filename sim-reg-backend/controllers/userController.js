@@ -1,5 +1,5 @@
-const { createUser } = require('../models/user.js');
-const { addRequest, deleteRequest } = require('../models/request');
+const { createUser, getAllAddress, getAllPolres } = require('../models/user.js');
+const { deleteRequest } = require('../models/request');
 const bcrypt = require('bcryptjs');
 const { pool } = require('../config/db.config.js');
 
@@ -80,8 +80,30 @@ const deleteUserRequest = async (req, res) => {
     }
 }
 
+const fetchAllAddress = async (req, res) => {
+    try {
+        const addresses = await getAllAddress();
+        res.status(200).json(addresses);
+    } catch (error) {
+        console.error('Error fetching addresses:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
+const fetchAllPolres = async (req, res) => {
+    try {
+        const polresList = await getAllPolres();
+        res.status(200).json(polresList);
+    } catch (error) {
+        console.error('Error fetching polres:', error);
+        res.status(500).json({ error: 'Internal Server Error' });
+    }
+}
+
 module.exports = { 
     createUserController, 
     loginUserController,
-    deleteUserRequest
+    deleteUserRequest,
+    fetchAllAddress,
+    fetchAllPolres
 };
